@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base::layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section>
+        <div class="contaner my-2">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-md-6">
+                    <div class="register">
+                        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert ms-4 me-4"
+                            role="alert">
+                            <p th:text="${session.message.content}"></p>
+
+                            <th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+
+                        </div>
+                        <h1 class="text-center mt-4 pt-4"> Register Here</h1>
+                        <form novalidate th:action="@{/register}" method="post" class="p-5" th:object="${user}">
+                            <div class="form-group">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control mb-3" th:value="${user.name}" name="name"
+                                    th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}">
+                                <div th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control mb-3" th:value="${user.email}" name="email"
+                                    th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}">
+                                <div th:each="e : ${#fields.errors('email')}" th:text="${e}" class="invalid-feedback">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="text" class="form-control mb-3" name="password">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <textarea rows="6" class="form-control" placeholder="Enter about yourself"
+                                    th:value="${user.about}" name="about"></textarea>
+                            </div>
+
+                            <div class="form-group form-check mb-3">
+                                <input type="checkbox" name="agreement" class="form-check-input">
+                                <label for="agreement">Accept Terms and Conditions</label>
+                            </div>
+
+                            <div class="container text-center">
+                                <button class="btn bg-pm text-white me-2" type="submit">Submit</button>
+                                <button class="btn bg-secondary text-white" type="reset">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

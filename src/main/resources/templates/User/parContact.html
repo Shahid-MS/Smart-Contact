@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{User/userBase::layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section>
+        <div class="card ms-3 me-3 mb-4">
+            <div class="card-body">
+                
+                <!-- ifExist -->
+                <div th:if="${contact}">
+                    <div class="container text-center">
+                        <img class="profile_image" th:src="@{'/Images/'+${contact.image}}">
+                        <h1 class="mt-2"><span th:text="${contact.name}"></span></h1>
+                    </div>
+
+                    <!-- description -->
+
+                    <table class="table table-responsive-lg table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="w-50 text-center">#Id</th>
+                                <th class="text-center" th:text="${'CMMSPUSER'+contact.id}"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row" class="text-center">Email</th>
+                                <td class="text-center" th:text="${contact.email}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-center">Phone</th>
+                                <td class="text-center" th:text="${contact.phone}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-center">Work</th>
+                                <td class="text-center" th:text="${contact.work}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="description mt-4 text-center">
+                        <p th:utext="${contact.description}"></p>
+                    </div>
+
+                    <div class="container text-center mb-4">
+                        <div class="row d-flex">
+                            <div class="col-6 text-end">
+                                <form th:action="@{'/user/contact/update-contact/'+${contact.id}}" method="post">
+                                    <button class="btn hover bg-pm text-white" type="submit">Update</button>
+                                </form>
+                            </div>
+                            <div class="col-6 text-start">
+                                <button class="btn btn-danger"
+                                    th:onClick="deleteContact([[${contact.id}]])">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:unless="${contact}">
+                    <div class="container text-center">
+                        <h1>Not authorized to access the contact</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

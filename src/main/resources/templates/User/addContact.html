@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{User/userBase::layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section>
+        <div class="card ms-3 me-3 mb-4">
+            <div class="card-body">
+                <div class="container-fluid mt1">
+                    <h1 class="text-center mb-3">Add Contact</h1>
+                    <div class="row">
+
+                        <div class="col-md-10 offset-md-1">
+                            <form th:action="@{/user/process-contact}" enctype="multipart/form-data"
+                                th:object="${contact}" method="post" class="mt-2">
+
+                                <!-- Name -->
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-user-alt"></i></span>
+                                    <input type="text" class="form-control" placeholder="Enter name here" name="name"
+                                        required>
+                                </div>
+
+                                <!-- work -->
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-briefcase"></i></span>
+                                    <input type="text" class="form-control" placeholder="Enter work here" name="work"
+                                        required>
+                                </div>
+
+                                <!-- email -->
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-mail-bulk"></i></span>
+                                    <input type="email" class="form-control" placeholder="Enter email here" name="email"
+                                        required>
+                                </div>
+
+
+                                <!-- phone -->
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                    <input type="number" class="form-control" placeholder="Enter mobile no."
+                                        name="phone" required>
+                                </div>
+
+
+                                <!-- description -->
+                                <textarea name="description" rows="10" class="form-control"
+                                    placeholder="Enter contact description" id="descriptionArea"></textarea>
+
+
+
+                                <!-- image -->
+                                <div class="input-group mt-3 mb-3">
+                                    <input type="file" class="form-control" placeholder="contact image"
+                                        name="profileImage">
+                                </div>
+
+                                <!-- submit -->
+                                <div class="container text-center"> <button type="submit"
+                                        class="btn bg-pm hover btn-md text-white">Save
+                                        Contact</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+        <script>
+            tinymce.init({
+              selector: '#descriptionArea'
+            });
+          </script>
+
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{User/userBase::layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section>
+        <div class="card ms-3 me-3 mb-4">
+            <div class="card-body">
+                <div class="container-fluid mt1 text-center">
+                    <h1 class="font-weight-bold">Hi! <span th:text="${user.name}"></span></h1>
+                    <img src="" th:src="@{/Images/dashboard.png}">
+
+                </div>
+                <div class="container text-center"><a class="btn bg-pm text-white hover"
+                        th:href="@{/user/add-contactForm}">Start Adding Your Contacts</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -6,7 +6,7 @@ body {
   background-color: #009688;
 }
 
-.hover:hover{
+.hover:hover {
   color: white;
   background-color: #027148;
 }
@@ -40,12 +40,17 @@ body {
 #login .container #login-row #login-column #login-box #login-form {
   padding: 20px;
 }
-#login .container #login-row #login-column #login-box #login-form #register-link {
+#login
+  .container
+  #login-row
+  #login-column
+  #login-box
+  #login-form
+  #register-link {
   margin-top: -85px;
 }
 
-
-.sidebar{
+.sidebar {
   width: 15%;
   background-color: white;
   height: 100%;
@@ -53,7 +58,7 @@ body {
   padding-top: 40px;
   z-index: 99999999;
 }
-.sidebar a{
+.sidebar a {
   display: block;
   width: 100%;
   padding: 10px 25px;
@@ -61,45 +66,59 @@ body {
   color: grey;
 }
 
-.sidebar a:hover{
+.sidebar a:hover {
   color: white;
   background-color: #009688;
 }
 
-.sidebar .cross{
+.sidebar .cross {
   position: absolute;
   top: 0;
   right: 35px;
   font-size: 36px;
   cursor: pointer;
-
 }
 
-.sidebar .divider{
+.sidebar .divider {
   margin-top: 7px;
   height: 0.5px;
   width: 100%;
   background-color: #e2e2e2;
 }
-.content{
+.content {
   margin-left: 18%;
 }
 
-.contact-img{
+.contact-img {
   height: 35px;
   width: 35px;
   border-radius: 50%;
 }
 
-.profile_image{
+.profile_image {
   height: 200px;
   width: 200px;
   border-radius: 50%;
 }
 
+.search-container {
+  position: relative;
+}
+.search-result {
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid gray;
+  display: none;
+}
+.search a:hover {
+  color: white;
+  background-color: #009688;
+}
 
-@media only screen and (max-width :920px){
-  .sidebar{
+@media only screen and (max-width: 920px) {
+  .sidebar {
     display: none;
     width: 80% !important;
     background-color: white;
@@ -108,7 +127,7 @@ body {
     padding-top: 20px;
   }
 
-  .content{
+  .content {
     margin-left: 0% !important;
-  }  
+  }
 }

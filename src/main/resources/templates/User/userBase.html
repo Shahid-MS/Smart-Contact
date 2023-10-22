@@ -56,10 +56,10 @@
         <!-- sidebar -->
         <div class="sidebar">
             <span onclick="toggleSidebar()" class="cross">&times;</span>
-            <a th:href="@{/user/dashboard}" class=" item"><i class="fas fa-home me-2"></i>Home</a>
-            <a th:href="@{/user/show-contacts/0}" class=" item"><i class="fas fa-id-card-alt me-2"></i>View Contacts</a>
-            <a th:href="@{/user/add-contactForm}" class=" item"><i class="fas fa-pencil-alt me-2"></i>Add Contacts</a>
-            <a th:href="@{/user/your-profile}" class=" item"><i class="fas fa-user-circle me-2"></i>Your Profile</a>
+            <a id="home-link" th:href="@{/user/dashboard}" class=" item mt-3"><i class="fas fa-home me-2"></i>Home</a>
+            <a id="showContact-link" th:href="@{/user/show-contacts/0}" class=" item"><i class="fas fa-id-card-alt me-2"></i>View Contacts</a>
+            <a id="addContact-link" th:href="@{/user/add-contactForm}" class=" item"><i class="fas fa-pencil-alt me-2"></i>Add Contacts</a>
+            <a id="profile-link"th:href="@{/user/your-profile}" class=" item"><i class="fas fa-user-circle me-2"></i>Your Profile</a>
             <!-- <a href="" class=" item"><i class="fas fa-cogs me-2"></i>Settings</a> -->
             <a th:href="@{/logout}" class=" item"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
             <div class="divider"></div>

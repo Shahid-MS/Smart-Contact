@@ -16,29 +16,37 @@
                     <div class="container text-center">
                         <img class="profile_image" th:src="@{/Images/user.png}">
                         <h1 class="mt-2"><span th:text="${user.name}"></span></h1>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" class="w-50 text-center">#User Id</th>
+                                        <th class="text-center" th:text="${'CMMSPUSER'+user.id}"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" class="text-center">Email</th>
+                                        <td class="text-center" th:text="${user.email}"></td>
+                                    </tr>
 
-                    <table class="table table-responsive table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="w-50 text-center">#User Id</th>
-                                <th class="text-center" th:text="${'CMMSPUSER'+user.id}"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row" class="text-center">Email</th>
-                                <td class="text-center" th:text="${user.email}"></td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row" class="text-center">Active</th>
-                                <td class="text-center" th:text="${user.enabled}"></td>
-                            </tr> 
-                        </tbody>
-                      </table>
+                                    <tr>
+                                        <th scope="row" class="text-center">Active</th>
+                                        <td class="text-center" th:text="${user.enabled}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <script>
+                $(document).ready(()=>{
+                    $('.item').removeClass('sidebarActive');
+                    $('#profile-link').addClass('sidebarActive');
+                })
+                
+            </script>
     </section>
 </body>
 

@@ -63,7 +63,7 @@ body {
   width: 100%;
   padding: 10px 25px;
   text-decoration: none;
-  color: grey;
+  color: gray;
 }
 
 .sidebar a:hover {
@@ -115,6 +115,10 @@ body {
 .search a:hover {
   color: white;
   background-color: #009688;
+}
+.sidebarActive{
+  background-color: #009688 !important;
+  color: white !important; 
 }
 
 @media only screen and (max-width: 920px) {

@@ -21,6 +21,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 // import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/user")
 public class UserController {
 
+  @Autowired
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
   @Autowired
   private UserRepository userRepo;
 
@@ -314,5 +317,34 @@ public class UserController {
     m.addAttribute("title", user.getName()+" Profile - SCMSP");
 
     return "User/yourProfile";
+  }
+
+  @GetMapping("/setting")
+  public String setting(){
+    return "User/setting";
+  }
+  
+  @PostMapping("/change-password")
+  public String changePassword(@RequestParam("oldPassword") String oldPassword , @RequestParam("newPassword") String newPassword, Principal p, HttpSession session){
+    // System.out.println("old password "+oldPassword);
+    // System.out.println("new password "+ newPassword);
+    String userName = p.getName();
+    User user = this.userRepo.getUserByName(userName);
+    // System.out.println("password : "+ user.getPassword());
+
+    if (bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+      System.out.println("Correct password");
+      //change password
+      user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+      userRepo.save(user);
+      session.setAttribute("message", new Message("Your password is successfully saved", "success"));
+    }
+    else{
+       session.setAttribute("message", new Message("Wrong Password !!", "danger"));
+       return "redirect:/user/setting";
+    }
+
+    
+    return "redirect:/user/dashboard";
   }
 }

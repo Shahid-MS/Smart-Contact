@@ -343,8 +343,6 @@ public class UserController {
        session.setAttribute("message", new Message("Wrong Password !!", "danger"));
        return "redirect:/user/setting";
     }
-
-    
     return "redirect:/user/dashboard";
   }
 }

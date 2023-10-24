@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base::layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section>
+        <div id="login">
+            <div class="container">
+                <div id="login-row" class="row justify-content-center align-items-center">
+                    <div id="login-column" class="col-md-6">
+                        <div id="login-box" style="height: 270px;" class="col-md-12">        
+                            <form id="login-form" class="form"  method="post" th:action="@{/send-otp}">
+                                <div class="alert alert-success mt-2 ms-1" role="alert">
+                                    Successfully Sent OTP to your registered Email
+                                  </div>
+                                <div class="form-group mb-2">
+                                    <label for="otp" class="text-white">Enter OTP</label><br>
+                                    <input type="" name="email" id="email" class="form-control" required>
+                                </div>
+                                <div class="form-group mt-2 text-center">
+                                    <input type="submit" name="submit" class="btn btn-md bg-light" value="verify">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

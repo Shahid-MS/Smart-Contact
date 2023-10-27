@@ -1,5 +1,6 @@
 package com.smart.contact.smartcontactmanager.Controller;
 
+import com.razorpay.*;
 // import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.smart.contact.smartcontactmanager.Entities.Contact;
 import com.smart.contact.smartcontactmanager.Entities.User;
@@ -14,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.Map;
+import org.json.JSONObject;
 // import java.util.List;
 // import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +32,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -39,6 +44,7 @@ public class UserController {
 
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
+
   @Autowired
   private UserRepository userRepo;
 
@@ -311,21 +317,25 @@ public class UserController {
   }
 
   @GetMapping("/your-profile")
-  public String yourprofile(Model m , Principal p){
-
+  public String yourprofile(Model m, Principal p) {
     User user = userRepo.getUserByName(p.getName());
-    m.addAttribute("title", user.getName()+" Profile - SCMSP");
+    m.addAttribute("title", user.getName() + " Profile - SCMSP");
 
     return "User/yourProfile";
   }
 
   @GetMapping("/setting")
-  public String setting(){
+  public String setting() {
     return "User/setting";
   }
-  
+
   @PostMapping("/change-password")
-  public String changePassword(@RequestParam("oldPassword") String oldPassword , @RequestParam("newPassword") String newPassword, Principal p, HttpSession session){
+  public String changePassword(
+    @RequestParam("oldPassword") String oldPassword,
+    @RequestParam("newPassword") String newPassword,
+    Principal p,
+    HttpSession session
+  ) {
     // System.out.println("old password "+oldPassword);
     // System.out.println("new password "+ newPassword);
     String userName = p.getName();
@@ -337,12 +347,42 @@ public class UserController {
       //change password
       user.setPassword(bCryptPasswordEncoder.encode(newPassword));
       userRepo.save(user);
-      session.setAttribute("message", new Message("Your password is successfully saved", "success"));
-    }
-    else{
-       session.setAttribute("message", new Message("Wrong Password !!", "danger"));
-       return "redirect:/user/setting";
+      session.setAttribute(
+        "message",
+        new Message("Your password is successfully saved", "success")
+      );
+    } else {
+      session.setAttribute(
+        "message",
+        new Message("Wrong Password !!", "danger")
+      );
+      return "redirect:/user/setting";
     }
     return "redirect:/user/dashboard";
+  }
+
+  //Creating order for payment
+
+  @PostMapping("/create_order")
+  @ResponseBody
+  public String createOrder(@RequestBody Map<String, Object> data)
+    throws Exception {
+    // System.out.println("order function executed");
+    // System.out.println(data);
+
+    int price = Integer.parseInt(data.get("amount").toString());
+    RazorpayClient client = new RazorpayClient(
+      "****key_id",
+      "***key_secret"
+    );
+ 
+    JSONObject orderRequest = new JSONObject();
+    orderRequest.put("amount", price * 100);
+    orderRequest.put("currency", "INR");
+    orderRequest.put("receipt", "txn_23465");
+    Order order = client.orders.create(orderRequest);
+    // System.out.println(order);
+
+    return order.toString();
   }
 }

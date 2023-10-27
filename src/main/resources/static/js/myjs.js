@@ -1,4 +1,4 @@
-console.log("Started");
+// console.log("Started");
 // alert("project started");
 
 const toggleSidebar = () => {
@@ -53,4 +53,86 @@ const search = () => {
         $(".search-result").show();
       });
   }
+};
+
+// payment
+
+//first request to server to create order
+const paymentStart = () => {
+  // alert("Payment started");
+  let amount = $("#payment_field").val();
+  // console.log(amount);
+  if (amount == "" || amount == null) {
+    // alert("Please fill the amount");
+    swal("Amount", "Amount is required", "error");
+    return;
+  }
+
+  //use ajax to send request to server to create order
+
+  $.ajax({
+    url: "/user/create_order",
+    data: JSON.stringify({ amount: amount }),
+    contentType: "application/json",
+    type: "POST",
+    dataType: "json",
+    success: function (response) {
+      // invoked if success
+      // console.log(response);
+      if (response.status == "created") {
+        // open payment form
+        let options = {
+          key: "****key_id",
+          amount: response.amount,
+          currency: "INR",
+          description: "Donation",
+          image:
+            "https://avatars.githubusercontent.com/u/112958600?s=400&u=c66802efda5009688aa79feac96b78dd31fd28df&v=4",
+          name: "Smart Contact",
+          order_id: response.id,
+
+          handler: function (response) {
+            // console.log(response.razorpay_payment_id);
+            // console.log(response.razorpay_order_id);
+            // console.log(response.razorpay_signature);
+            // console.log("Payment successful");
+            // alert("Payment success");
+            swal("Thanks!", "Payment successful !", "success");
+          },
+
+          prefill: {
+            name: "",
+            email: "",
+            contact: "",
+          },
+          notes: {
+            address: "Smart Contact",
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
+
+        let rzp = new Razorpay(options);
+        rzp.on("payment.failed", function (response) {
+          // console.log(response.error.code);
+          // console.log(response.error.description);
+          // console.log(response.error.source);
+          // console.log(response.error.step);
+          // console.log(response.error.reason);
+          // console.log(response.error.metadata.order_id);
+          // console.log(response.error.metadata.payment_id);
+          // alert("Payment failed");
+          swal("Oops!", "Payment unsuccessful", "error");
+        });
+
+        rzp.open();
+      }
+    },
+
+    error: function (error) {
+      // invoked when error
+      // console.log(error);
+    },
+  });
 };

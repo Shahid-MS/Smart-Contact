@@ -36,10 +36,10 @@ public class EmailService {
       new Authenticator() {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
-            //Edit password before login
+          //Edit password before login
           return new PasswordAuthentication(
             "md.shahidalam.cse24@heritageit.edu.in",
-            "***********"
+            "*****Password"
           );
         }
       }

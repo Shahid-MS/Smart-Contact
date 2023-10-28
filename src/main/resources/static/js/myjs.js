@@ -82,7 +82,7 @@ const paymentStart = () => {
       if (response.status == "created") {
         // open payment form
         let options = {
-          key: "****key_id",
+          key: "******Key_id",
           amount: response.amount,
           currency: "INR",
           description: "Donation",
@@ -97,7 +97,12 @@ const paymentStart = () => {
             // console.log(response.razorpay_signature);
             // console.log("Payment successful");
             // alert("Payment success");
-            swal("Thanks!", "Payment successful !", "success");
+            updatePaymentOnServer(
+              response.razorpay_payment_id,
+              response.razorpay_order_id,
+              "paid"
+            );
+            // swal("Thanks!", "Payment successful !", "success");
           },
 
           prefill: {
@@ -133,6 +138,29 @@ const paymentStart = () => {
     error: function (error) {
       // invoked when error
       // console.log(error);
+    },
+  });
+};
+
+const updatePaymentOnServer = (payment_id, order_id, status) => {
+  $.ajax({
+    url: "/user/update_order",
+    data: JSON.stringify({
+      payment_id: payment_id,
+      order_id: order_id,
+      status: status,
+    }),
+    contentType: "application/json",
+    type: "POST",
+    dataType: "json",
+    success: function (response) {
+      // console.log("Success");
+      swal("Thanks!", "Payment successful !", "success");
+    },
+
+    error: function (error) {
+      // console.log("error");
+      swal("Oops!", "Payment successful, but we dont get on server, Refund will be initiated within 5 working days", "error");
     },
   });
 };

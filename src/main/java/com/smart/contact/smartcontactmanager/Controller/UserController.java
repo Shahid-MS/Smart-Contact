@@ -3,9 +3,11 @@ package com.smart.contact.smartcontactmanager.Controller;
 import com.razorpay.*;
 // import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.smart.contact.smartcontactmanager.Entities.Contact;
+import com.smart.contact.smartcontactmanager.Entities.Orders;
 import com.smart.contact.smartcontactmanager.Entities.User;
 import com.smart.contact.smartcontactmanager.Helper.Message;
 import com.smart.contact.smartcontactmanager.dao.ContactRepository;
+import com.smart.contact.smartcontactmanager.dao.OrdersRepo;
 import com.smart.contact.smartcontactmanager.dao.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.Map;
+import java.util.Random;
 import org.json.JSONObject;
 // import java.util.List;
 // import java.util.Optional;
@@ -24,6 +27,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +54,11 @@ public class UserController {
 
   @Autowired
   private ContactRepository contactRepo;
+
+  @Autowired
+  private OrdersRepo ordersRepo;
+
+  Random rand = new Random(1000);
 
   @ModelAttribute
   public void addCommonData(Model m, Principal principal) {
@@ -365,24 +374,56 @@ public class UserController {
 
   @PostMapping("/create_order")
   @ResponseBody
-  public String createOrder(@RequestBody Map<String, Object> data)
+  public String createOrder(@RequestBody Map<String, Object> data, Principal p)
     throws Exception {
     // System.out.println("order function executed");
     // System.out.println(data);
 
     int price = Integer.parseInt(data.get("amount").toString());
     RazorpayClient client = new RazorpayClient(
-      "****key_id",
-      "***key_secret"
+      "******Key_id",
+      "*****Key_secret"
     );
- 
+    int txn = 0000;
+    for (int i = 0; i < 5; i++) {
+      txn = rand.nextInt(9000) + 1000;
+    }
+
     JSONObject orderRequest = new JSONObject();
     orderRequest.put("amount", price * 100);
     orderRequest.put("currency", "INR");
-    orderRequest.put("receipt", "txn_23465");
+    orderRequest.put("receipt", "txn_" + txn);
     Order order = client.orders.create(orderRequest);
     // System.out.println(order);
 
+    //Save the data to database
+    Orders myOrder = new Orders();
+    Integer amt = order.get("amount");
+    amt /= 100;
+    myOrder.setAmount(amt.toString());
+    // System.out.println(myOrder.getAmount());
+    myOrder.setOrderId(order.get("id").toString());
+    // System.out.println(myOrder.getOrderId());
+    myOrder.setStatus("created");
+    // System.out.println(myOrder.getStatus());
+    myOrder.setUser(userRepo.getUserByName(p.getName()));
+    // System.out.println(myOrder.getUser().getName());
+    myOrder.setReciept(order.get("receipt"));
+    // System.out.println(myOrder.getReciept());
+    ordersRepo.save(myOrder);
+
     return order.toString();
+  }
+
+  @PostMapping("/update_order")
+  public ResponseEntity<?> updateOrder(@RequestBody Map<String, Object> data) {
+    // System.out.println(data);
+    Orders myOrder = ordersRepo.findByOrderId(data.get("order_id").toString());
+
+    myOrder.setPaymentId(data.get("payment_id").toString());
+    myOrder.setStatus(data.get("status").toString());
+    ordersRepo.save(myOrder);
+
+    return ResponseEntity.ok(Map.of("msg", "updated"));
   }
 }
